@@ -1,34 +1,41 @@
 require('dotenv').config();
 
-const {RTMClient} = require('@slack/rtm-api');
+const { RTMClient } = require('@slack/rtm-api');
 
-var token = 'xoxb-4240877487553-4229303761031-dLp4NOE5JGqxDYhbIt17a7pr';
+const fs = require('fs');
 
-var rtm = new RTMClient(token);
+
+
+let token;
+
+try {
+	token = fs.readFileSync('./token').toString('utf-8');
+} catch (err) {
+	console.error(err);
+}
+
+console.log(token);
+
+const rtm = new RTMClient(token);
+
 rtm.start();
 
-var greeting = require('./greeting');
-var square = require('./square');
-
-
+const greeting = require('./greeting');
+const square = require('./square');
 
 rtm.on('message', function (message) {
-	var channel = message.channel;
-	var text = message.text;
+	const channel = message.channel;
+	const text = message.text;
 
-	if (!isNaN(text)){
+	if (!isNaN(text)) {
 		square(rtm, text, channel);
 	} else {
-		switch (text){	
+		switch (text) {
 			case 'hi':
-				greeting(rtm,channel);
+				greeting(rtm, channel);
 				break;
 			default:
-				rtm.sendMessage('I`m alive',channel);
-		}	
-	
-	
+				rtm.sendMessage('I`m alive', channel);
+		}
 	}
-
 });
-
