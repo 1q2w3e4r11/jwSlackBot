@@ -4,9 +4,9 @@ const { RTMClient } = require('@slack/rtm-api');
 
 const fs = require('fs');
 
+// add comments.
 
-
-let token;
+let    token;
 
 try {
 	token = fs.readFileSync('./token').toString('utf-8');
